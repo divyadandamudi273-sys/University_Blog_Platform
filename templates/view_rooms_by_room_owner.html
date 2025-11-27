@@ -1,0 +1,138 @@
+{% if session['role'] == 'room_owner' %}
+{% include 'room_owner_head.html' %}
+{% endif %}
+
+{% if session['role'] == 'admin' %}
+{% include 'admin_head.html' %}
+{% endif %}
+
+{% if session['role'] == 'admin' %}
+<div class="row mt-10">
+<div class="w-80">
+    <div class="form-heading ">View Rooms</div>
+</div>
+<div class="w-20">
+        <div class="w-60 m-auto"><a href="add_room" class="btn display-block">Add Room</a></div>
+    </div>
+</div>
+{% endif %}
+{% if session['role'] == 'room_owner' %}
+<div class=" mt-10">
+    <div class="">
+        <div class="form-heading ">View Rooms</div>
+    </div>
+</div>
+{% endif %}
+
+
+
+<div class="row mt-10 ">
+{% for room in rooms %}
+
+    {% set room_owner = get_room_owner_id_by_room(room['room_owner_id']) %}
+    {% set room_category = get_room_category_id_by_room(room['category_id']) %}
+        <div class="card w-100 mt-10">
+                <div class="row ">
+                    <div class="w-30">
+                        <div class="row">
+                            <div class="">Room Title:</div>
+                            <div class="ml-10 txt-blue">{{room['room_title']}}</div>
+                        </div>
+                         <div class="row mt-10 ">
+                            <div class="">Description:</div>
+                            <div class="ml-10 txt-blue">{{room['description']}}</div>
+                        </div>
+                    </div>
+                    <div class="w-30">
+                        <div class="row">
+                            <div class="">Room Owner:</div>
+                            <div class="ml-10 txt-blue">{{room_owner['first_name']}} {{room_owner['last_name']}}</div>
+                        </div>
+                        <div class="row mt-10">
+                            <div class="">Created On:</div>
+                            <div class="ml-10 txt-blue">{{room['created_on'].strftime("%d-%m-%Y")}}</div>
+                        </div>
+                        <div class="row mt-10">
+                            <div class="">Created By:</div>
+                            <div class="ml-10 txt-blue">{{room['created_by']}}</div>
+                        </div>
+
+                    </div>
+                    <div class="w-40">
+                        <div class="row">
+                            <div>
+                                 <div class="row">
+                                    <div class="">Room Category:</div>
+                                    <div class="ml-10 txt-blue">{{room_category['category_name']}}</div>
+                                </div>
+                                <div class="row mt-10">
+                                    <div class="">Status:</div>
+                                    <div class="ml-10 txt-g">{{room['status']}}</div>
+                                </div>
+                                {% if session['role']=='admin' %}
+                                    <div class="">
+                                         <div class="btn mt-5"><a href="poll?room_id={{room['_id']}}">View Polls</a></div>
+                                    </div>
+                                {% endif %}
+<!--                                {% if session['role']=='room_owner' or session['role']=='member' %}-->
+<!--                                    <div class="">-->
+<!--                                         <div class="btn mt-5"><a href="poll?room_id={{room['_id']}}">Poll</a></div>-->
+<!--                                    </div>-->
+<!--                                {% endif %}-->
+                            </div>
+                            <div>
+                                {% if str(session['room_owner_id']) == str(room['room_owner_id']) or session['role']=='admin' %}
+                                <div class="ml-50 btn"><a href="view_requests?room_id={{room['_id']}}">View Requests</a></div>
+                                {% endif %}
+                                <div class="ml-50 btn mt-5"><a href="goto_my_room?room_id={{room['_id']}}">Goto Room</a></div>
+                            </div>
+                        </div>
+                    <div>
+                </div>
+            </div>
+        </div>
+        <div class="row mt-20">
+         {% for room_member in room['room_members'] %}
+            {% if room_member['status']!='Join Requested'%}
+            {% if room_member['status']!='Rejected'%}
+            {% set member =get_room_member_id_by_room_member(room_member['member_id'])  %}
+
+            {% if str(session['room_owner_id']) == str(room['room_owner_id']) or session['role']=='admin' %}
+             <div class="w-30">
+                <div class="card2 ml-10 ">
+                    <div class="card_title"></div>
+                    <div>
+                        <div class="row">
+                            <div class="">Member Name:</div>
+                            <div class="ml-10 txt-blue">{{member['first_name']}} {{member['last_name']}}</div>
+                        </div>
+                        <div class="row">
+                            <div class="">Status:</div>
+                            <div class="ml-10 txt-g">{{room_member['status']}}</div>
+                        </div>
+                        <div class="row">
+                            <div class="">Joined date:</div>
+                            <div class="ml-10 txt-blue">{{room_member['joining_date'].strftime("%d-%m-%Y %H:%M %p")}}</div>
+                        </div>
+                    </div>
+                    {% if room_member['status']=='Accepted'%}
+                    <div class="mt-10">
+                         <div class="btn"><a href="block_member?room_id={{room['_id']}}&member_id={{room_member['member_id']}}">Block Member</a></div>
+                    </div>
+                     {% endif%}
+                     {% if room_member['status']=='Blocked'%}
+                        <div class="mt-10">
+                             <div class="btn"><a href="un_block_member?room_id={{room['_id']}}&member_id={{room_member['member_id']}}">UnBlock</a></div>
+                        </div>
+                     {% endif%}
+                    {% endif%}
+
+                </div>
+             </div>
+            {% endif%}
+            {% endif%}
+        {% endfor%}
+       </div>
+      </div>
+{% endfor %}
+</div>

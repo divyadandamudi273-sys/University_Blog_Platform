@@ -1,0 +1,41 @@
+{% if session['role'] == 'admin' %}
+{% include 'admin_head.html' %}
+{% endif %}
+{% if session['role'] == 'room_owner' %}
+{% include 'room_owner_head.html' %}
+{% endif %}
+
+<div class="form-heading">View Request</div>
+
+ <div class="row mt-20">
+         {% for room_member in room['room_members'] %}
+     {% if room_member['status']=='Join Requested'%}
+            {% set member =get_room_member_id_by_room_member(room_member['member_id'])  %}
+             <div class="w-30">
+                <div class="card2 ml-10 ">
+                    <div class="card_title"></div>
+                    <div>
+                        <div class="row">
+                            <div class="">Member Name:</div>
+                            <div class="ml-10 txt-blue">{{member['first_name']}} {{member['last_name']}}</div>
+                        </div>
+                        <div class="row">
+                            <div class="">Status:</div>
+                            <div class="ml-10 txt-g">{{room_member['status']}}</div>
+                        </div>
+                        <div class="row">
+                            <div class="">Requested date:</div>
+                            <div class="ml-10 txt-blue">{{room_member['joining_date'].strftime("%d-%m-%Y %H:%M %p")}}</div>
+                        </div>
+                    </div>
+                    {% if room_member['status'] == 'Join Requested' %}
+                    <div class="row space-around">
+                         <div class="btn mt-10 w-40"><a href="accept_room_request?room_id={{room['_id']}}&member_id={{member['_id']}}">Accept Request</a></div>
+                         <div class="btn mt-10 w-40"><a href="reject_room_request?room_id={{room['_id']}}&member_id={{member['_id']}}">Reject Request</a></div>
+                    </div>
+                    {% endif%}
+                </div>
+             </div>
+     {% endif%}
+        {% endfor%}
+ </div>

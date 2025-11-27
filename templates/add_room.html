@@ -1,0 +1,44 @@
+{% include 'admin_head.html'%}
+
+<div class="mt-100">
+     <div class="w-30 m-auto">
+        <div class="card p-20">
+            <form action="add_room_action", method="post">
+                <div class="form-heading mb-20 ">Add Room</div>
+                <div class="mt-10">
+                    <label for="room_title">Room Title:</label>
+                    <input type="text" id="room_title" class="form-input " name="room_title" placeholder="Enter Room Title" required>
+                </div>
+                <div class="mt-10">
+                    <label>Choose Room Category:</label>
+                    <select class="form-input" name="category_id" id="category_id" required>
+                        <option value="">Choose room category </option>
+                        {% for room_categorie in room_categories %}
+                        <option value="{{room_categorie['_id']}}">
+                            {{room_categorie['category_name']}}
+                        </option>
+                        {% endfor %}
+                    </select>
+                </div>
+                 <div class="mt-10">
+                    <label>Choose Room Owner:</label>
+                    <select class="form-input" name="room_owner_id" id="room_owner_id" required>
+                        <option value="">Choose room Owners </option>
+                        {% for room_owner in room_owners %}
+                        <option value="{{room_owner['_id']}}">
+                            {{room_owner['first_name']}} {{room_owner['last_name']}}
+                        </option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="mt-10">
+                    <label for="room_title">Description:</label>
+                    <textarea id="description" rows="2" class="form-input " name="description" placeholder="Enter Description" required></textarea>
+                </div>
+                <div class="mt-10">
+                    <input type="submit" class="btn  w-100" value="Add">
+                </div>
+            </form>
+        </div>
+     </div>
+</div>

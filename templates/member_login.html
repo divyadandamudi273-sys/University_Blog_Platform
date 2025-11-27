@@ -1,0 +1,25 @@
+{% include 'main_head.html'%}
+{% include 'links.html'%}
+<div class="row mt-30" >
+    <div class="col-4"></div>
+<div class="col-4">
+ <form action="member_login_action" method="post">
+        <div class="card  mt-100">
+           <div class="form-heading mb-10"> Member Login</div>
+            <div>
+                <label for="email"  class="label "></label>
+                <input type="email" id="email" name="email" required placeholder="Enter Email  " class="input mb-10 mt-10">
+            </div>
+            <div>
+                <label for="Password" class="label "></label >
+                <input type="Password" name="password" id="Password" required placeholder="Enter Password "  class="input mt-10 mb-10">
+            </div>
+            <div><input type="submit" value="Login" class="btn"></div>
+                    <div class="text-align-c">or</div>
+            <div class="text-align-c">Don't have an account ? click here for <a href="/member_registration">Signup</a></div>
+
+        </div>
+    </form>
+</div>
+
+</div>

@@ -1,0 +1,67 @@
+{% if session['role'] == 'room_owner' %}
+{% include 'room_owner_head.html' %}
+{% endif %}
+
+{% if session['role'] == 'member' %}
+{% include 'member_head.html' %}
+{% endif %}
+
+{% if session['role'] == 'admin' %}
+{% include 'admin_head.html' %}
+{% endif %}
+
+{% if  session['role'] == 'room_owner' or session['role'] == 'member' %}
+<div class="row mt-20">
+    <div class="w-20">
+        <div class="w-60 m-auto"><a href="add_poll?room_id={{room_id}}" class="btn display-block">Add Polls</a></div>
+    </div>
+    <div class="w-80 ">
+        <div class="form-heading">View Polls</div>
+    </div>
+    <div class="w-20 mt-5 ">
+        <div class="w-60 m-auto"><a href="back_to_room?room_id={{room_id}}" class="btn display-block">Back To Room</a></div>
+    </div>
+</div>
+{% endif %}
+{% if session['role'] == 'admin' %}
+<div class="mt-5 ">
+        <div class="form-heading">View Polls</div>
+    </div>
+{% endif %}
+
+
+
+<div class="row mt-20 space-around">
+    {% for poll in polls %}
+    {% if session['role']=='member'%}
+    {% set is_answered = get_is_answer_poll_id(poll['_id'])  %}
+    {% endif%}
+    {% set poll_count_yes = get_poll_count_by_poll_id(poll['_id'])  %}
+        {% set poll_count_no = get_poll_count_by_poll_id2(poll['_id'])  %}
+        {% set submitted_count = get_submitted_count_by_poll_id(poll['_id'])  %}
+
+    <div class="card w-30 mt-10">
+            <div class="row">
+                <div class=""><h2>{{poll['question']}}</h2></div>
+            </div>
+        {% if session['role']=='member'%}
+
+        {% if is_answered==False%}
+            <form action="room_owner_poll_submit_action">
+                <input type="hidden" name="poll_id" value="{{poll['_id']}}">
+                <input type="hidden" name="room_id" value="{{room_id}}">
+                <div class="poll-buttons">
+                    <button type="submit" name="poll" value="yes" class="button yes">Yes</button>
+                    <button type="submit" name="poll" value="no" class="button no">No</button>
+                </div>
+            </form>
+        {% endif%}
+        {% endif%}
+            <div class="results row ml-10">
+                <p><strong>Yes:</strong> <span id="yes-count">{{poll_count_yes}}</span></p>
+                <p class="ml-10"><strong>No:</strong> <span id="no-count">{{poll_count_no}}</span></p>
+                <p class="ml-10"><strong>Submitted Count:</strong> <span id="submitted_count">{{submitted_count}}</span></p>
+            </div>
+    </div>
+     {% endfor %}
+</div>

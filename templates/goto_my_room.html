@@ -1,0 +1,132 @@
+{% if session['role'] == 'room_owner' %}
+{% include 'room_owner_head.html' %}
+{% endif %}
+
+{% if session['role'] == 'member' %}
+{% include 'member_head.html' %}
+{% endif %}
+
+{% if session['role'] == 'admin' %}
+{% include 'admin_head.html' %}
+{% endif %}
+
+<style>
+   body{
+    background: #E55D87;
+    background: -webkit-linear-gradient(to right, #5FC3E4, #E55D87);
+    background: linear-gradient(to right, #5FC3E4, #E55D87);
+}
+</style>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+
+<script>
+function add_like(post_id){
+    alert("Post Liked");
+    let url = "/add_like?post_id="+post_id
+    $.get(url,function(data,status){
+    console.log(data);
+    })
+}
+</script>
+
+{% set room = get_room_by_room_id(room_id) %}
+<body>
+{% if session['role'] == 'member' or  session['role'] == 'room_owner'  %}
+<div class="row mt-20">
+    <div class="w-70 ">
+        <div class="form-heading">Title:{{room['room_title']}}</div>
+    </div>
+    <div class="w-10 ">
+        <div class="m-auto"><a href="add_post?room_id={{room_id}}" class="btn display-block">Add Post</a></div>
+    </div>
+    <div class="w-10 ml-10">
+        <div class="m-auto"><a href="poll?room_id={{room_id}}" class="btn display-block">Poll</a></div>
+    </div>
+
+</div>
+{% endif %}
+
+{% if session['role'] == 'admin' %}
+<div class="mt-10 ">
+        <div class="form-heading"></div>
+    </div>
+ <div class=" ">
+        <div class="form-heading">Title:{{room['room_title']}}</div>
+    </div>
+{% endif %}
+
+<div class="mt-20">
+    {% for post in posts %}
+    {% if 'room_owner_id' in post%}
+    {% set room_owner = get_posted_by_post(post['room_owner_id'])%}
+    {% endif%}
+    {% if 'member_id' in post %}
+    {% set member = get_member_by_post(post['member_id'])%}
+    {% endif%}
+    {% set likes = get_like_count(post['_id'])%}
+    {% set comments = get_comment_count(post['_id']) %}
+
+    {% if post['status']=='Posted' %}
+    <div class="w-30 m-auto">
+        <div class="card mt-20">
+            <div class="mt-10 row">
+                <div>Post Title:</div>
+                <div class="ml-10 txt-blue">{{post['title']}}</div>
+            </div>
+            <div class="mt-5 row">
+                <div>About:</div>
+                <div class="ml-10 txt-blue">{{post['description']}}</div>
+            </div>
+            {% if 'member_id' in post%}
+            <div class="mt-5 row">
+                <div>Posted By:</div>
+                <div class="ml-10 txt-blue">{{member['first_name']}} {{member['last_name']}}</div>
+            </div>
+            {% else%}
+            <div class="mt-5 row">
+                <div>Posted By:</div>
+                <div class="ml-10 txt-blue">{{room_owner['first_name']}} {{room_owner['last_name']}}</div>
+            </div>
+            {% endif%}
+            {% if session['role'] == 'admin' or  session['role'] == 'room_owner' %}
+            {% if 'room_owner_id' not in post%}
+                 <div class="">
+                    <div class="m-auto"><a href="block_post?room_id={{room_id}}&post_id={{post['_id']}}">Block Post</a></div>
+                </div>
+            {% endif %}
+             {% endif %}
+            {% if post['image'] != '' %}
+            <div class="mt-10">
+                <img src="../static/posted_files/images/{{post['image']}}" class="w-100 " style="max-width:100%;">
+            </div>
+            {% endif %}
+            {% if post['video'] != '' %}
+            <div>
+                <video width="400" height="300" controls>
+                  <source src="../static/posted_files/video/{{post['video']}}"   type="video/ogg">
+                </video>
+             </div>
+            {% endif %}
+            <div class="card">
+                <div class="row space-around">
+                    <button id="likeBtn" class="btn w-45" onclick="add_like('{{post['_id']}}')">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="30px" height="25px" fill="red" class="bi bi-hand-thumbs-up-fill" viewBox="0 0 16 16">
+                            <path d="M6.956 1.745C7.021.81 7.908.087 8.864.325l.261.066c.463.116.874.456 1.012.965.22.816.533 2.511.062 4.51a10 10 0 0 1 .443-.051c.713-.065 1.669-.072 2.516.21.518.173.994.681 1.2 1.273.184.532.16 1.162-.234 1.733q.086.18.138.363c.077.27.113.567.113.856s-.036.586-.113.856c-.039.135-.09.273-.16.404.169.387.107.819-.003 1.148a3.2 3.2 0 0 1-.488.901c.054.152.076.312.076.465 0 .305-.089.625-.253.912C13.1 15.522 12.437 16 11.5 16H8c-.605 0-1.07-.081-1.466-.218a4.8 4.8 0 0 1-.97-.484l-.048-.03c-.504-.307-.999-.609-2.068-.722C2.682 14.464 2 13.846 2 13V9c0-.85.685-1.432 1.357-1.615.849-.232 1.574-.787 2.132-1.41.56-.627.914-1.28 1.039-1.639.199-.575.356-1.539.428-2.59z"/>
+                        </svg>
+                         <span id="likes_count" class="p-10 count-bold">{{likes}}</span>
+                    </button>
+                    <a href="get_comments?post_id={{post['_id']}}" id="commentBtn" class="btn w-45" style="text-decoration:none">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="30px" height="25px" fill="red" class="bi bi-chat-fill" viewBox="0 0 16 16">
+                          <path d="M8 15c4.418 0 8-3.134 8-7s-3.582-7-8-7-8 3.134-8 7c0 1.76.743 3.37 1.97 4.6-.097 1.016-.417 2.13-.771 2.966-.079.186.074.394.273.362 2.256-.37 3.597-.938 4.18-1.234A9 9 0 0 0 8 15"/>
+                        </svg>
+                         <span id="commentCount" class="p-10 count-bold">{{comments}}</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+    {% endfor %}
+</div>
+</body>

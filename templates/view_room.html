@@ -1,0 +1,95 @@
+{% if session['role'] == 'admin' %}
+{% include 'admin_head.html' %}
+{% endif %}
+{% if session['role'] == 'room_owner' %}
+{% include 'room_owner_head.html' %}
+{% endif %}
+
+{% if session['role'] == 'member' %}
+{% include 'member_head.html' %}
+{% endif %}
+
+<div class="row mt-20">
+    {% if session['role'] == 'admin' %}
+    <div class="w-20">
+        <div class="w-60 m-auto"><a href="add_room" class="btn display-block">Add Room</a></div>
+    </div>
+    <div class="w-80 ">
+        <div class="form-heading">View Rooms</div>
+    </div>
+    {% endif %}
+    {% if session['role'] == 'member' or session['role'] == 'room_owner'  %}
+    <div class="w-100">
+        <div class="form-heading">View Rooms</div>
+    </div>
+    {% endif %}
+</div>
+
+
+{% if session['role'] == 'member' or  session['role'] == 'admin'  %}
+<div class="row mt-20 ml-50 gap-30">
+    {% for room in rooms %}
+    {% set room_owner = get_room_owner_id_by_room(room['room_owner_id']) %}
+    {% set room_category = get_room_category_id_by_room(room['category_id']) %}
+
+        {% if session['role'] == 'member' %}
+        {% set is_in_room = get_is_in_room_by_room_id(room['_id']) %}
+        {% set is_in_room2 = get_is_in_room_by_room_id2(room['_id']) %}
+        {% endif %}
+
+
+    <div class="card w-23 mt-10">
+            <div class="row">
+                <div class="">Room Title:</div>
+                <div class="ml-10">{{room['room_title']}}</div>
+            </div>
+            <div class="row">
+                <div class="">Room Owner:</div>
+                <div class="ml-10">{{room_owner['first_name']}} {{room_owner['last_name']}}</div>
+            </div>
+             <div class="row">
+                <div class="">Room Category:</div>
+                <div class="ml-10">{{room_category['category_name']}}</div>
+            </div>
+            <div class="row">
+                <div class="">Description:</div>
+                <div class="ml-10">{{room['description']}}</div>
+            </div>
+            <div class="row">
+                <div class="">Created On:</div>
+                <div class="ml-10">{{room['created_on'].strftime("%d-%m-%Y")}}</div>
+            </div>
+            <div class="row">
+                <div class="">Created By:</div>
+                <div class="ml-10">{{room['created_by']}}</div>
+            </div>
+            <div class="row">
+                <div class="">Status:</div>
+                <div class="ml-10">{{room['status']}}</div>
+            </div>
+             {% if session['role'] == 'member' %}
+                 {% if not is_in_room%}
+                <div class="mt-10" ><a href="send_room_join_request?room_id={{room['_id']}}" class="btn display-block">Send Request</a></div>
+                {% else%}
+                    {% if is_in_room2 %}
+                        <div class=" btn mt-5"><a href="goto_my_room?room_id={{room['_id']}}">Goto Room</a></div>
+                    {% endif %}
+                {% endif %}
+
+            {% endif %}
+            {% if session['role'] == 'room_owner' %}
+                <div class=" btn mt-5"><a href="goto_my_room?room_id={{room['_id']}}">Goto Room</a></div>
+                <div class="">
+                     <div class="btn mt-5"><a href="poll?room_id={{room['_id']}}">Poll</a></div>
+                </div>
+           {% endif %}
+           {% if session['role'] == 'admin' %}
+                <div class=" btn mt-5"><a href="goto_my_room?room_id={{room['_id']}}">Goto Room</a></div>
+                <div class="">
+                     <div class="btn mt-5"><a href="poll?room_id={{room['_id']}}">Add Poll</a></div>
+                </div>
+           {% endif %}
+    </div>
+     {% endfor %}
+</div>
+{% endif %}

@@ -1,0 +1,22 @@
+{% include 'main_head.html'%}
+{% include 'links.html'%}
+<div class="row mt-30" >
+    <div class="col-4"></div>
+<div class="col-4">
+ <form action="admin_login_action" method="post">
+        <div class="card  mt-100">
+           <div class="form-heading mb-10"> Admin Login</div>
+            <div>
+                <label for="name"  class="label "></label>
+                <input type="text" id="name" name="name" required placeholder="Enter Admin  " class="input mb-10 mt-10">
+            </div>
+            <div>
+                <label for="Password" class="label "></label >
+                <input type="Password" name="password" id="Password" required placeholder="Enter Password "  class="input mt-10 mb-10">
+            </div>
+            <div><input type="submit" value="Login" class="btn"></div>
+        </div>
+    </form>
+</div>
+
+</div>

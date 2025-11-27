@@ -1,0 +1,61 @@
+{% include 'main_head.html'%}
+{% include 'links.html'%}
+<div class="row mt-30" >
+    <div class="col-3"></div>
+<div class="col-5">
+ <form action="member_registration_action" method="post">
+        <div class="card  mt-50">
+           <div class="form-heading mb-10"> Member Registration</div>
+            <div class="row ">
+                <div class="col-6 p-5">
+                <label for="first_name"  class="label "></label>
+                <input type="text" id="first_name" name="first_name" required placeholder="Enter First Name  " class="input mb-10 mt-10">
+            </div>
+             <div class="col-6 p-5">
+                <label for="last_name"  class="label "></label>
+                <input type="text" id="last_name" name="last_name" required placeholder="Enter Last Name  " class="input mb-10 mt-10">
+            </div>
+                </div>
+            <div class="row ">
+                <div class="col-6 p-5">
+                <label for="email"  class="label "></label>
+                <input type="email" id="email" name="email" required placeholder="Enter Email  " class="input mb-10 mt-10">
+            </div>
+           <div class="col-6 p-5">
+                <label for="phone"  class="label "></label>
+                <input type="number" id="phone" name="phone" required placeholder="Enter Phone Number  " class="input mb-10 mt-10">
+            </div>
+                </div>
+          <div class="row ">
+                <div class="col-6 p-5">
+                <label for="Password" class="label "></label >
+                <input type="Password" name="password" id="Password" required placeholder="Enter Password "  class="input mt-10 mb-10">
+            </div>
+
+          <div class="col-6 p-5">
+                <label for="state" class="label "></label >
+                <input type="text" name="state" id="state" required placeholder="Enter State "  class="input mt-10 mb-10">
+            </div>
+              </div>
+          <div class="row ">
+                <div class="col-6 p-5">
+                <label for="city" class="label "></label >
+                <input type="text" name="city" id="city" required placeholder="Enter City "  class="input mt-10 mb-10">
+            </div>
+          <div class="col-6 p-5">
+                <label for="zip_code" class="label "></label >
+                <input type="number" name="zip_code" id="zip_code" required placeholder="Enter Zip code "  class="input mt-10 mb-10">
+            </div>
+              </div>
+             <div>
+                  <label for="address"></label>
+                  <textarea name="address"  rows="2" cols="50" id="address"  class="input mt-10 mb-10"  placeholder="Enter Address" required></textarea>
+              </div>
+
+            <div><input type="submit" value="Register" class="btn"></div>
+
+        </div>
+    </form>
+</div>
+
+</div>

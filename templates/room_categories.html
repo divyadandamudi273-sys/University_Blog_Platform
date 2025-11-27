@@ -1,0 +1,29 @@
+{% include 'admin_head.html'%}
+
+<div class="row space-around">
+    <div class="w-30">
+        <div class="card p-20 mt-100">
+            <form action="room_categories_action">
+                    <div class="form-heading mb-20 ">Add Room Categories</div>
+                    <div class="mt-10">
+                        <label for="category_name">Category Name:</label>
+                        <input type="text" id="category_name" class="form-input " name="category_name" placeholder="Enter Room Category Name" required>
+                    </div>
+                    <div class="mt-10">
+                        <input type="submit" class="btn  w-100" value="Add">
+                    </div>
+                    <div class="txt-b">{{message}}</div>
+            </form>
+        </div>
+    </div>
+    <div class="w-30">
+        <div class="card p-20 mt-100">
+            <div class="form-heading mb-20 ">View Room Categories</div>
+            <ol class="ol ml-20">
+                {% for room_categorie in room_categories %}
+                <li>{{room_categorie['category_name']}}<a href="edit_category?category_id={{room_categorie['_id']}} " class="ml-10">Edit</a></li>
+                {% endfor %}
+            </ol>
+        </div>
+    </div>
+</div>

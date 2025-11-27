@@ -1,0 +1,48 @@
+{% if session['role'] == 'room_owner' %}
+{% include 'room_owner_head.html' %}
+{% endif %}
+
+{% if session['role'] == 'member' %}
+{% include 'member_head.html' %}
+{% endif %}
+
+
+<div class="mt-100 sticky ">
+    <div class="scroll2 w-180">
+        <div class="card w-30 m-auto">
+            <h2>Leave a Comment</h2>
+                <form action="get_comment_action">
+                    <input type="hidden" name="post_id" value="{{post_id}}">
+
+                    <textarea id="comment" name="comment"  rows="3" placeholder="Write your comment here..." class="form-input"></textarea>
+                    <input type="submit" value="Add Comment" class="btn mt-10">
+                </form>
+            <div class="mt-10"> <h3>Comments:</h3> </div>
+            <div id="commentList" class="comment-list"></div>
+
+            {% for comment in post['comments'] %}
+
+            {% if 'room_owner_id' in comment %}
+            {% set room_owner = get_room_owner_id_by_comments(comment['room_owner_id']) %}
+            {% endif %}
+
+            {% if 'member_id' in comment %}
+            {% set member = get_member_id_by_comments(comment['member_id']) %}
+            {% endif %}
+            <div class="mt-10">
+                <div class="row">
+                    <div>{{comment['comment']}}</div>
+                    <div class="fs-10 mt-5 ml-10 ">{{comment['commented_on'].strftime("%d-%m-%Y %H:%M %p")}}</div>
+                </div>
+                    {% if 'room_owner_id' in comment %}
+                     <div class="mt-10"><i>Comment By:</i> {{room_owner['first_name']}} {{room_owner['last_name']}}</div>
+                    {% endif %}
+                     {% if 'member_id' in comment %}
+                     <div class="mt-10"><i>Comment By:</i> {{member['first_name']}} {{member['last_name']}}</div>
+                    {% endif %}
+                <hr>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>

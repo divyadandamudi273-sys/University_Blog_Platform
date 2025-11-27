@@ -1,0 +1,19 @@
+{% include 'admin_head.html'%}
+
+<div class="row space-around">
+    <div class="w-30">
+        <div class="card p-20 mt-100">
+            <form action="edit_category_action">
+                <input type="hidden" name="category_id" value="{{category_id}}">
+                    <div class="form-heading mb-20 ">Update Room Category</div>
+                    <div class="mt-10">
+                        <label for="category_name">Category Name:</label>
+                        <input type="text" id="category_name" class="form-input " name="category_name" value="{{category['category_name']}}">
+                    </div>
+                    <div class="mt-10">
+                        <input type="submit" class="btn  w-100" value="Update">
+                    </div>
+            </form>
+        </div>
+    </div>
+</div>

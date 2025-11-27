@@ -1,0 +1,26 @@
+{% if session['role'] == 'room_owner' %}
+{% include 'room_owner_head.html' %}
+{% endif %}
+
+{% if session['role'] == 'member' %}
+{% include 'member_head.html' %}
+{% endif %}
+
+<div class="mt-100">
+  <div class="card w-30 p-20 m-auto">
+    <form action="add_poll_action">
+      <input type="hidden" name="room_id" value="{{room_id}}">
+      <div class="form-heading">Add Pool</div>
+      <div>
+        <div class="mt-10">
+            <label for="question">Question:</label>
+            <textarea id="question" name="question" rows="2" class="form-input" placeholder="Enter Your Question" required></textarea>
+        </div>
+        <div class="mt-10">
+           <input type="submit" value="Submit" class="btn">
+        </div>
+      </div>
+    </form>
+    <div class="txt-g txt-b">{{message}}</div>
+  </div>
+</div>

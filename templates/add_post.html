@@ -1,0 +1,45 @@
+{% if session['role'] == 'room_owner' %}
+{% include 'room_owner_head.html' %}
+{% endif %}
+
+{% if session['role'] == 'member' %}
+{% include 'member_head.html' %}
+{% endif %}
+
+<div class="mt-100">
+  <div class="card w-30 p-20 m-auto">
+    <form action="add_post_action" method="post" enctype="multipart/form-data">
+      <input type="hidden" name="room_id" value="{{room_id}}">
+      <div class="form-heading">Add Post</div>
+      <div>
+        <div class="mt-10">
+            <label for="title">Post Title</label>
+           <input type="text" id="title" name="title" class="form-input" placeholder="Enter Post Title" >
+        </div>
+        <div class="mt-10">
+            <label for="image">Image</label>
+           <input type="file" id="image" name="image" accept="image/*" class="form-input">
+        </div>
+        <div class="mt-10">
+             <label for="video">Video</label>
+             <input type="file" id="video" name="video" accept="video/*" class="form-input">
+        </div>
+        <div class="mt-20">
+            <label for="description">Description</label>
+            <textarea  id="description" name="description" placeholder="Enter  Description"  class="form-input" required></textarea>
+        </div>
+        <div class="mt-10">
+           <input type="submit" value="Add Post" class="btn">
+        </div>
+      </div>
+    </form>
+    <div class="txt-g txt-b">{{message}}</div>
+  </div>
+</div>
+
+
+
+
+
+
+
