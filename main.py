@@ -10,7 +10,7 @@ from pymongo import ReturnDocument
 from pymongo.errors import DuplicateKeyError
 
 # ---------- MongoDB setup ----------
-my_client = pymongo.MongoClient("mongodb://localhost:27017")
+my_client = pymongo.MongoClient("mongodb+srv://dandamudidivya02_db_user:Divya12@cluster0.kv22aue.mongodb.net/")
 my_database = my_client["university_blog"]
 
 room_owner_collection = my_database["room_owner"]
